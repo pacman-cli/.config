@@ -105,10 +105,18 @@
 --   },
 -- }
 --
+-- return {
+--   {
+--     "dgox16/oldworld.nvim",
+--     lazy = false,
+--     priority = 1000,
+--   },
+-- }
 return {
-  {
-    "dgox16/oldworld.nvim",
-    lazy = false,
-    priority = 1000,
-  },
+  "folke/tokyonight.nvim", -- Change this if using a different colorscheme
+  opts = function(_, opts)
+    opts.styles = {
+      functions = { italic = true }, -- Make functions italic
+    }
+  end,
 }

@@ -170,4 +170,6 @@ return {
   { import = "astrocommunity.markdown-and-latex" },
   { import = "astrocommunity.diagnostics.error-lens-nvim" },
   { import = "astrocommunity.docker.lazydocker" },
+
+  -- { import = "astrocommunity.syntax.nvim-ts-rainbow2" }, --rainbow pairs for brackets
 }

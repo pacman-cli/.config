@@ -15,20 +15,20 @@ return {
     "ray-x/lsp_signature.nvim",
     event = "BufRead",
     config = function()
-      require("lsp_signature").setup({
+      require("lsp_signature").setup {
         bind = true,
         handler_opts = {
           border = "rounded",
         },
-        hint_enable = false,  -- disable virtual text hints
+        hint_enable = false, -- disable virtual text hints
         floating_window = true,
         fix_pos = true,
         max_height = 12,
         max_width = 80,
         wrap = true,
         hi_parameter = "Search",
-        toggle_key = '<C-k>', -- toggle signature on and off in insert mode
-      })
+        toggle_key = "<C-k>", -- toggle signature on and off in insert mode
+      }
     end,
   },
 
@@ -154,9 +154,9 @@ return {
         Search = "",
         Selected = "",
         TabClose = "",
-        Linux = "",--this line is added
-        Windows = "",--this line is added
-        MacOS = "",--this line is added
+        Linux = "", --this line is added
+        Windows = "", --this line is added
+        MacOS = "", --this line is added
       },
     },
   },
@@ -177,6 +177,28 @@ return {
         Object = "",
         Package = "",
         String = "",
+      }
+    end,
+  },
+  {
+    "HiPhish/rainbow-delimiters.nvim",
+    event = "VeryLazy",
+    config = function()
+      local rainbow_delimiters = require "rainbow-delimiters"
+      vim.g.rainbow_delimiters = {
+        strategy = {
+          [""] = rainbow_delimiters.strategy.global,
+          ["vim"] = rainbow_delimiters.strategy["local"], -- ✅ Correct way to reference "local"
+        },
+        highlight = {
+          "RainbowDelimiterRed",
+          "RainbowDelimiterYellow",
+          "RainbowDelimiterBlue",
+          "RainbowDelimiterOrange",
+          "RainbowDelimiterGreen",
+          "RainbowDelimiterViolet",
+          "RainbowDelimiterCyan",
+        },
       }
     end,
   },
@@ -203,26 +225,24 @@ return {
     lazy = false,
     priority = 1000,
     opts = {
-      style = 'darker',  -- Choose darker style for deep black background
+      style = "darker", -- Choose darker style for deep black background
       transparent = false,
       term_colors = true,
       code_style = {
-        comments = 'italic',
-        keywords = 'bold',
-        functions = 'none',
-        strings = 'none',
-        variables = 'none'
+        comments = "italic",
+        keywords = "bold",
+        functions = "none",
+        strings = "none",
+        variables = "none",
       },
       colors = {
-        black = "#000000",  -- Pure black background
-        bg0 = "#000000",    -- Making background pure black
-        bg1 = "#1a1a1a",    -- Slightly lighter for contrasts
-        bg2 = "#252525",    -- For UI elements
+        black = "#000000", -- Pure black background
+        bg0 = "#000000", -- Making background pure black
+        bg1 = "#1a1a1a", -- Slightly lighter for contrasts
+        bg2 = "#252525", -- For UI elements
       },
     },
-    config = function(_, opts)
-      require('onedark').setup(opts)
-    end,
+    config = function(_, opts) require("onedark").setup(opts) end,
   },
   -- Add Catppuccin theme
   -- ,
