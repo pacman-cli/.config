@@ -23,7 +23,7 @@ return {
       "toml",
       "markdown",
       "markdown_inline",
-      -- Add more languages as needed
+      "php", -- Add more languages as needed
     },
     highlight = {
       enable = true, -- Enable Treesitter highlighting

@@ -15,6 +15,9 @@ return {
         ["<leader>no"] = { "<cmd>ObsidianOpen<cr>", "Open in Obsidian" },
         ["<leader>nb"] = { "<cmd>ObsidianBacklinks<cr>", "Show Backlinks" },
         ["<leader>nt"] = { "<cmd>ObsidianTags<cr>", "Search Tags" },
+        -- Changed conflicting mappings
+        ["<leader>nS"] = { "<cmd>ObsidianSearch<cr>", "Search Notes" }, -- Changed ns to nS
+        ["<leader>nT"] = { "<cmd>ObsidianTags<cr>", "Search Tags" }, -- Changed nt to nT
       },
     },
   },

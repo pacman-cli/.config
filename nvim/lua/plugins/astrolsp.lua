@@ -55,24 +55,43 @@ return {
                 commitCharactersSupport = false,
                 documentationFormat = { "markdown" },
                 resolveSupport = {
-                  properties = { "documentation", "detail" }
-                }
+                  properties = { "documentation", "detail" },
+                },
               },
-              contextSupport = false
-            }
-          }
+              contextSupport = false,
+            },
+          },
         },
         handlers = {
-          ["textDocument/hover"] = vim.lsp.with(
-            vim.lsp.handlers.hover,
-            { border = "rounded", max_width = 80 }
-          ),
+          ["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, { border = "rounded", max_width = 80 }),
           ["textDocument/signatureHelp"] = vim.lsp.with(
             vim.lsp.handlers.signature_help,
             { border = "rounded", max_width = 80 }
-          )
-        }
+          ),
+        },
       },
+      "neovim/nvim-lspconfig",
+      opts = {
+        servers = {
+          -- PHP LSP Configuration
+          intelephense = {
+            settings = {
+              intelephense = {
+                files = {
+                  maxSize = 5000000, -- Increase file size limit if needed
+                },
+              },
+            },
+          },
+        },
+      },
+      config = function()
+        -- Enable auto-formatting on save for PHP
+        vim.api.nvim_create_autocmd("BufWritePre", {
+          pattern = "*.php",
+          callback = function() vim.lsp.buf.format() end,
+        })
+      end,
       -- Add Java LSP configuration
       jdtls = {
         cmd = {
@@ -84,17 +103,22 @@ return {
           "-Dlog.level=ALL",
           "-Xmx1g",
           "--add-modules=ALL-SYSTEM",
-          "--add-opens", "java.base/java.util=ALL-UNNAMED",
-          "--add-opens", "java.base/java.lang=ALL-UNNAMED",
-          "-jar", vim.fn.glob("/opt/homebrew/Cellar/jdtls/*/libexec/plugins/org.eclipse.equinox.launcher_*.jar"),
-          "-configuration", "/opt/homebrew/Cellar/jdtls/*/libexec/config_mac",
-          "-data", vim.fn.expand("~/.cache/jdtls-workspace") .. vim.fn.getcwd(),
+          "--add-opens",
+          "java.base/java.util=ALL-UNNAMED",
+          "--add-opens",
+          "java.base/java.lang=ALL-UNNAMED",
+          "-jar",
+          vim.fn.glob "/opt/homebrew/Cellar/jdtls/*/libexec/plugins/org.eclipse.equinox.launcher_*.jar",
+          "-configuration",
+          "/opt/homebrew/Cellar/jdtls/*/libexec/config_mac",
+          "-data",
+          vim.fn.expand "~/.cache/jdtls-workspace" .. vim.fn.getcwd(),
         },
         -- Modified root_dir configuration
         root_dir = function(fname)
-          local root = require("jdtls.setup").find_root({".git", "mvnw", "gradlew", "pom.xml", "build.gradle"})
+          local root = require("jdtls.setup").find_root { ".git", "mvnw", "gradlew", "pom.xml", "build.gradle" }
           -- If no project root found, use the file's directory as root
-          return root or vim.fn.expand("%:p:h")
+          return root or vim.fn.expand "%:p:h"
         end,
         settings = {
           java = {
@@ -104,12 +128,12 @@ return {
                 {
                   name = "JavaSE-17",
                   path = "/opt/homebrew/opt/openjdk@17/libexec/openjdk.jdk/Contents/Home",
-                }
-              }
-            }
-          }
-        }
-      }
+                },
+              },
+            },
+          },
+        },
+      },
     },
     -- customize how language servers are attached
     handlers = {

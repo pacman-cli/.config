@@ -123,7 +123,7 @@ return {
   { import = "astrocommunity.colorscheme.nord-nvim" },
   { import = "astrocommunity.colorscheme.tokyonight-nvim" },
 
-  -- Terminal Integration
+  --TODO: Terminal Integration
   -- Toggle Term Manager: Better terminal integration with session management
   -- Keymaps:
   -- <C-\> - Toggle terminal
@@ -131,6 +131,7 @@ return {
   -- <leader>th - Horizontal terminal
   { import = "astrocommunity.terminal-integration.toggleterm-manager-nvim" },
 
+  { import = "astrocommunity.terminal-integration.vim-tmux-navigator" },
   -- Note Taking
   -- Obsidian: Note management
   -- Keymaps:
@@ -159,17 +160,42 @@ return {
   { import = "astrocommunity.remote-development" },
   { import = "astrocommunity.register" },
   { import = "astrocommunity.programming-language-support" },
+  --TODO: pack
   { import = "astrocommunity.pack.cpp" },
+  { import = "astrocommunity.pack.php" },
+  { import = "astrocommunity.pack.go" },
+  { import = "astrocommunity.pack.full-dadbod" },
+  { import = "astrocommunity.pack.html-css" },
+  { import = "astrocommunity.pack.laravel" },
   { import = "astrocommunity.pack.docker" },
   { import = "astrocommunity.pack.dart" },
+  { import = "astrocommunity.pack.markdown" },
   { import = "astrocommunity.pack.java" },
+  { import = "astrocommunity.pack.sql" },
+  { import = "astrocommunity.pack.vue" },
+  { import = "astrocommunity.pack.tailwindcss" },
+  { import = "astrocommunity.pack.typescript" },
+  { import = "astrocommunity.pack.rainbow-delimiter-indent-blankline" },
+
   { import = "astrocommunity.note-taking.obsidian-nvim" },
+  { import = "astrocommunity.note-taking.global-note-nvim" },
+  { import = "astrocommunity.note-taking.neorg" },
+  { import = "astrocommunity.note-taking.venn-nvim" },
   { import = "astrocommunity.motion" },
   -- { import = "astrocommunity.media" },
   -- { import = "astrocommunity.lsp" },
   { import = "astrocommunity.markdown-and-latex" },
   { import = "astrocommunity.diagnostics.error-lens-nvim" },
   { import = "astrocommunity.docker.lazydocker" },
+  --TODO: Test
+  { import = "astrocommunity.test.neotest" },
+  --TODO: Syntax
+  { import = "astrocommunity.syntax.hlargs-nvim" },
+  { import = "astrocommunity.syntax.vim-easy-align" },
+  --TODO: Quickfix
+  { import = "astrocommunity.quickfix.nvim-bqf" },
+  { import = "astrocommunity.quickfix.quicker-nvim" },
+  --TODO: motion
 
-  -- { import = "astrocommunity.syntax.nvim-ts-rainbow2" }, --rainbow pairs for brackets
+  { import = "astrocommunity.motion.flash-nvim" },
 }
