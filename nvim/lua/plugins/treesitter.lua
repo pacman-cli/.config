@@ -23,7 +23,8 @@ return {
       "toml",
       "markdown",
       "markdown_inline",
-      "php", -- Add more languages as needed
+      "php", 
+      "sql", -- Added SQL language for syntax highlighting
     },
     highlight = {
       enable = true, -- Enable Treesitter highlighting
@@ -31,9 +32,9 @@ return {
     },
   },
   config = function()
-    -- Enable italics for function names
-    vim.api.nvim_set_hl(0, "@function", { italic = true })
-    vim.api.nvim_set_hl(0, "@method", { italic = true }) -- Methods too
-    vim.api.nvim_set_hl(0, "Function", { italic = true }) -- Standard function highlight group
+    -- Enable italics for function names without changing color
+    vim.api.nvim_set_hl(0, "@function", { italic = true }) -- Only italic, no color
+    vim.api.nvim_set_hl(0, "@method", { italic = true }) -- Only italic, no color
+    vim.api.nvim_set_hl(0, "Function", { italic = true }) -- Only italic, no color
   end,
 }
