@@ -9,7 +9,7 @@ padding.y = 10
 decorations = "Buttonless"
 
 # opacity = 1
-opacity = 0.85
+opacity = 1.00
 blur = true
 
 option_as_alt = "Both"
@@ -18,10 +18,12 @@ option_as_alt = "Both"
 # normal.family = "UbuntuMono Nerd Font Mono"
 # size = 19
 # normal.family = "MesloLGS Nerd Font Mono"
-normal.family = "CaskaydiaCove Nerd Font Mono"
+# normal.family = "CaskaydiaCove Nerd Font Mono"
+
+ normal.family = "DankMono Nerd Font"
 
 # normal.family = "Cascadia Code"
-size = 21
+size = 23
 bold.style = "Bold"
 
 [colors]
