@@ -76,9 +76,7 @@ return {
       local luasnip = require "luasnip"
       luasnip.filetype_extend("javascript", { "javascriptreact" })
     end,
-  },
-
-  {
+  },  {
     "windwp/nvim-autopairs",
     config = function(plugin, opts)
       require "astronvim.plugins.configs.nvim-autopairs"(plugin, opts) -- include the default astronvim config that calls the setup call
@@ -302,16 +300,21 @@ return {
     -- defaults, as well as each extension).
     require("telescope").setup(opts)
     require("telescope").load_extension("hierarchy")
-  end,}
-  -- "error-lens.nvim",
-  -- opts = {
-  --   highlight = {
-  --     enabled = true,
-  --     severity = {
-  --       min = vim.diagnostic.severity.WARN,
-  --     },
-  --   },
-  -- },
-  -- -- Add Catppuccin theme
-  -- ,
+  end,},
+  {
+    "ThePrimeagen/harpoon",
+    branch = "harpoon2",
+    dependencies = { "nvim-lua/plenary.nvim" },
+    config = function()
+      local harpoon = require("harpoon")
+
+      -- Keybindings
+      vim.keymap.set("n", "<leader>a", function() harpoon:list():append() end, { desc = "Harpoon: Add file" })
+      vim.keymap.set("n", "<leader>h", function() harpoon.ui:toggle_quick_menu(harpoon:list()) end, { desc = "Harpoon: Open menu" })
+      vim.keymap.set("n", "<leader>1", function() harpoon:list():select(1) end, { desc = "Harpoon: Go to file 1" })
+      vim.keymap.set("n", "<leader>2", function() harpoon:list():select(2) end, { desc = "Harpoon: Go to file 2" })
+      vim.keymap.set("n", "<leader>3", function() harpoon:list():select(3) end, { desc = "Harpoon: Go to file 3" })
+      vim.keymap.set("n", "<leader>4", function() harpoon:list():select(4) end, { desc = "Harpoon: Go to file 4" })
+    end,
+  },{ "adalessa/laravel.nvim", dependencies = { "nvim-treesitter/nvim-treesitter" } }
 }
