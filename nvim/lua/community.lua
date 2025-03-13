@@ -166,7 +166,7 @@ return {
   { import = "astrocommunity.pack.go" },
   { import = "astrocommunity.pack.full-dadbod" },
   { import = "astrocommunity.pack.html-css" },
-  { import = "astrocommunity.pack.laravel" },
+  -- { import = "astrocommunity.pack.laravel" },
   { import = "astrocommunity.pack.docker" },
   { import = "astrocommunity.pack.dart" },
   { import = "astrocommunity.pack.markdown" },
