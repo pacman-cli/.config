@@ -8,7 +8,7 @@ return {
     workspaces = {
       {
         name = "personal",
-        path = "~/Documents/ObsidianVault",  -- Change this to your vault path
+        path = "~/Documents/Obsidian Vault", -- Change this to your vault path
       },
     },
     completion = {
@@ -28,21 +28,15 @@ return {
     mappings = {
       -- Overwrite the default mappings
       ["<leader>on"] = {
-        action = function()
-          return require("obsidian").new_note()
-        end,
+        action = function() return require("obsidian").new_note() end,
         opts = { desc = "New Obsidian note" },
       },
       ["<leader>of"] = {
-        action = function()
-          return require("obsidian").find_notes()
-        end,
+        action = function() return require("obsidian").find_notes() end,
         opts = { desc = "Find Obsidian notes" },
       },
       ["<leader>ob"] = {
-        action = function()
-          return require("obsidian").show_backlinks()
-        end,
+        action = function() return require("obsidian").show_backlinks() end,
         opts = { desc = "Show Obsidian backlinks" },
       },
     },

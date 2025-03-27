@@ -76,7 +76,8 @@ return {
       local luasnip = require "luasnip"
       luasnip.filetype_extend("javascript", { "javascriptreact" })
     end,
-  },  {
+  },
+  {
     "windwp/nvim-autopairs",
     config = function(plugin, opts)
       require "astronvim.plugins.configs.nvim-autopairs"(plugin, opts) -- include the default astronvim config that calls the setup call
@@ -264,57 +265,66 @@ return {
       statuscolumn = { enabled = true },
       words = { enabled = true },
     },
-  },{
-  "jmacadie/telescope-hierarchy.nvim",
-  dependencies = {
-    {
-      "nvim-telescope/telescope.nvim",
-      dependencies = { "nvim-lua/plenary.nvim" },
-    },
   },
-  keys = {
-    { -- lazy style key map
-      -- Choose your own keys, this works for me
-      "<leader>si",
-      "<cmd>Telescope hierarchy incoming_calls<cr>",
-      desc = "LSP: [S]earch [I]ncoming Calls",
-    },
-    {
-      "<leader>so",
-      "<cmd>Telescope hierarchy outgoing_calls<cr>",
-      desc = "LSP: [S]earch [O]utgoing Calls",
-    },
-  },
-  opts = {
-    -- don't use `defaults = { }` here, do this in the main telescope spec
-    extensions = {
-      hierarchy = {
-        -- telescope-hierarchy.nvim config, see below
+  {
+    "jmacadie/telescope-hierarchy.nvim",
+    dependencies = {
+      {
+        "nvim-telescope/telescope.nvim",
+        dependencies = { "nvim-lua/plenary.nvim" },
       },
-      -- no other extensions here, they can have their own spec too
     },
+    keys = {
+      { -- lazy style key map
+        -- Choose your own keys, this works for me
+        "<leader>si",
+        "<cmd>Telescope hierarchy incoming_calls<cr>",
+        desc = "LSP: [S]earch [I]ncoming Calls",
+      },
+      {
+        "<leader>so",
+        "<cmd>Telescope hierarchy outgoing_calls<cr>",
+        desc = "LSP: [S]earch [O]utgoing Calls",
+      },
+    },
+    opts = {
+      -- don't use `defaults = { }` here, do this in the main telescope spec
+      extensions = {
+        hierarchy = {
+          -- telescope-hierarchy.nvim config, see below
+        },
+        -- no other extensions here, they can have their own spec too
+      },
+    },
+    config = function(_, opts)
+      -- Calling telescope's setup from multiple specs does not hurt, it will happily merge the
+      -- configs for us. We won't use data, as everything is in it's own namespace (telescope
+      -- defaults, as well as each extension).
+      require("telescope").setup(opts)
+      require("telescope").load_extension "hierarchy"
+    end,
   },
-  config = function(_, opts)
-    -- Calling telescope's setup from multiple specs does not hurt, it will happily merge the
-    -- configs for us. We won't use data, as everything is in it's own namespace (telescope
-    -- defaults, as well as each extension).
-    require("telescope").setup(opts)
-    require("telescope").load_extension("hierarchy")
-  end,},
   {
     "ThePrimeagen/harpoon",
     branch = "harpoon2",
     dependencies = { "nvim-lua/plenary.nvim" },
     config = function()
-      local harpoon = require("harpoon")
+      local harpoon = require "harpoon"
 
       -- Keybindings
       vim.keymap.set("n", "<leader>a", function() harpoon:list():append() end, { desc = "Harpoon: Add file" })
-      vim.keymap.set("n", "<leader>h", function() harpoon.ui:toggle_quick_menu(harpoon:list()) end, { desc = "Harpoon: Open menu" })
+      vim.keymap.set(
+        "n",
+        "<leader>h",
+        function() harpoon.ui:toggle_quick_menu(harpoon:list()) end,
+        { desc = "Harpoon: Open menu" }
+      )
       vim.keymap.set("n", "<leader>1", function() harpoon:list():select(1) end, { desc = "Harpoon: Go to file 1" })
       vim.keymap.set("n", "<leader>2", function() harpoon:list():select(2) end, { desc = "Harpoon: Go to file 2" })
       vim.keymap.set("n", "<leader>3", function() harpoon:list():select(3) end, { desc = "Harpoon: Go to file 3" })
       vim.keymap.set("n", "<leader>4", function() harpoon:list():select(4) end, { desc = "Harpoon: Go to file 4" })
     end,
-  },{ "adalessa/laravel.nvim", dependencies = { "nvim-treesitter/nvim-treesitter" } }
+  },
+  { "adalessa/laravel.nvim", dependencies = { "nvim-treesitter/nvim-treesitter" } },
+  
 }

@@ -20,16 +20,16 @@ return {
     easing_function = "quadratic", -- Default easing function
     performance_mode = false, -- Disable "Performance Mode" on all buffers.
     pre_hook = function() -- Function to run before the scrolling animation starts
-      vim.opt.eventignore:append({
+      vim.opt.eventignore:append {
         "WinScrolled",
         "CursorMoved",
-      })
+      }
     end,
     post_hook = function() -- Function to run after the scrolling animation ends
-      vim.opt.eventignore:remove({
+      vim.opt.eventignore:remove {
         "WinScrolled",
         "CursorMoved",
-      })
+      }
     end,
-  }
+  },
 }

@@ -1,46 +1,45 @@
--- Customize Mason plugins
-
----@type LazySpec
 return {
-  -- use mason-lspconfig to configure LSP installations
+  -- Configure Mason for LSP servers
   {
     "williamboman/mason-lspconfig.nvim",
-    -- overrides `require("mason-lspconfig").setup(...)`
     opts = {
       ensure_installed = {
         "lua_ls",
         "ts_ls",
         "tailwindcss",
-        "jdtls",
+        -- "jdtls",
         "clangd",
         "kotlin_language_server",
         "volar",
         "angularls",
         "html",
         "dockerls",
-        "sqls",
-        -- add more arguments for adding more language servers
+        "sqlls", -- Fix: "sqls" → "sqlls" (correct LSP name for SQL)
       },
     },
   },
-  -- use mason-null-ls to configure Formatters/Linter installation for null-ls sources
+  -- Configure Mason for Formatters and Linters
   {
     "jay-babu/mason-null-ls.nvim",
-    -- overrides `require("mason-null-ls").setup(...)`
     opts = {
       ensure_installed = {
-        "stylua",
-        -- add more arguments for adding more null-ls sources
+        "stylua", -- Lua formatter
+        "prettier", -- JS/TS/CSS/HTML formatter
+        "eslint_d", -- JS/TS linter
+        "black", -- Python formatter
+        "flake8", -- Python linter
+        "clang-format", -- C/C++ formatter
+        "shellcheck", -- Shell script linter
       },
+      automatic_installation = true, -- Auto install missing tools
     },
   },
+  -- Configure Mason for Debuggers (DAP)
   {
     "jay-babu/mason-nvim-dap.nvim",
-    -- overrides `require("mason-nvim-dap").setup(...)`
     opts = {
       ensure_installed = {
         "python",
-        -- add more arguments for adding more debuggers
       },
     },
   },

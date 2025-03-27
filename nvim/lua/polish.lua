@@ -1,5 +1,3 @@
--- if true then return end -- WARN: REMOVE THIS LINE TO ACTIVATE THIS FILE
-
 -- This will run last in the setup process and is a good place to configure
 -- things like custom filetypes. This is just pure lua so anything that doesn't
 -- fit in the normal config locations above can go here
@@ -27,6 +25,8 @@
 --     ["~/%.config/foo/.*"] = "fooscript",
 --   },
 -- }
+vim.opt.wrap = true
+vim.opt.linebreak = true  -- Prevents line breaks in the middle of words
 vim.opt.ttyfast = true -- Enable fast terminal connection
 vim.opt.updatetime = 100 -- Faster update time
 vim.opt.timeout = true

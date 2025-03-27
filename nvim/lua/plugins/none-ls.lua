@@ -1,5 +1,3 @@
--- if true then return {} end -- WARN: REMOVE THIS LINE TO ACTIVATE THIS FILE
-
 -- Customize None-ls sources
 
 ---@type LazySpec
@@ -27,7 +25,7 @@ return {
 
       -- Go
       null_ls.builtins.formatting.gofmt,
-      null_ls.builtins.formatting.goimports,
+      -- null_ls.builtins.formatting.goimports,
       null_ls.builtins.diagnostics.golangci_lint,
 
       -- Python

@@ -48,7 +48,7 @@ return {
         view_search = "virtualtext",
       },
       popupmenu = {
-        enabled = false,  -- Disable noice's popup menu
+        enabled = false, -- Disable noice's popup menu
         backend = "nui",
         kind_icons = {},
       },
@@ -78,5 +78,5 @@ return {
         lsp_doc_border = false,
       },
     },
-  }
+  },
 }
