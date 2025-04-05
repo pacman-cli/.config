@@ -38,7 +38,7 @@ require("nvim-treesitter.configs").setup {
     "vim",
     "query",
     "go",
-    "cpp"
+    "cpp",
     -- Add other languages you need
   },
   highlight = {

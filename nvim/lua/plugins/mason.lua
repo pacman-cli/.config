@@ -7,7 +7,7 @@ return {
         "lua_ls",
         "ts_ls",
         "tailwindcss",
-        -- "jdtls",
+        "jdtls",
         "clangd",
         "kotlin_language_server",
         "volar",

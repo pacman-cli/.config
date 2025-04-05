@@ -326,5 +326,9 @@ return {
     end,
   },
   { "adalessa/laravel.nvim", dependencies = { "nvim-treesitter/nvim-treesitter" } },
-  
+  {
+    "glepnir/lspsaga.nvim",
+    event = "LspAttach",
+    config = function() require("lspsaga").setup {} end,
+  },
 }
