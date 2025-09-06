@@ -12,6 +12,8 @@ return {
   -- { import = "astrocommunity.pack.rust" },
   -- { import = "astrocommunity.pack.python" },
   -- { import = "astrocommunity.pack.typescript" },
+  -- 
+  { import = "astrocommunity.pack.php" },
   { import = "astrocommunity.pack.tailwindcss" },
   { import = "astrocommunity.pack.json" },
   { import = "astrocommunity.pack.docker" },

@@ -208,6 +208,163 @@
 --
 --
 --
+--
+-- ---@type LazySpec
+-- return {
+--   "AstroNvim/astrolsp",
+--   ---@type AstroLSPOpts
+--   opts = {
+--     features = {
+--       codelens = true,
+--       inlay_hints = false,
+--       semantic_tokens = true,
+--     },
+--     formatting = {
+--       format_on_save = {
+--         enabled = true,
+--         allow_filetypes = { "go", "java","php" },
+--         ignore_filetypes = {},
+--       },
+--       disabled = {},
+--       timeout_ms = 1000,
+--     },
+--     servers = {
+--       gopls = {
+--         cmd = { "gopls" },
+--         filetypes = { "go", "gomod", "gowork", "gotmpl" },
+--         root_dir = require("lspconfig.util").root_pattern("go.work", "go.mod", ".git"),
+--         settings = {
+--           gopls = {
+--             analyses = {
+--               unusedparams = true,
+--               shadow = true,
+--             },
+--             staticcheck = true,
+--           },
+--         },
+--       },
+--       jdtls = {
+--         cmd = {
+--           "java",
+--           "-Declipse.application=org.eclipse.jdt.ls.core.id1",
+--           "-Dosgi.bundles.defaultStartLevel=4",
+--           "-Declipse.product=org.eclipse.jdt.ls.core.product",
+--           "-Dlog.protocol=true",
+--           "-Dlog.level=ALL",
+--           "-Xmx1g",
+--           "--add-modules=ALL-SYSTEM",
+--           "--add-opens",
+--           "java.base/java.util=ALL-UNNAMED",
+--           "--add-opens",
+--           "java.base/java.lang=ALL-UNNAMED",
+--           "-jar",
+--           vim.fn.glob "/opt/homebrew/Cellar/jdtls/*/libexec/plugins/org.eclipse.equinox.launcher_*.jar",
+--           "-configuration",
+--           "/opt/homebrew/Cellar/jdtls/*/libexec/config_mac",
+--           "-data",
+--           vim.fn.expand "~/.cache/jdtls-workspace" .. vim.fn.getcwd(),
+--         },
+--         root_dir = function(fname)
+--           local root = require("jdtls.setup").find_root { ".git", "mvnw", "gradlew", "pom.xml", "build.gradle" }
+--           return root or vim.fn.expand "%:p:h"
+--         end,
+--         settings = {
+--           java = {
+--             home = "/opt/homebrew/opt/openjdk@24/libexec/openjdk.jdk/Contents/Home", -- JDK 24 path
+--             configuration = {
+--               runtimes = {
+--                 {
+--                   name = "JavaSE-24",
+--                   path = "/opt/homebrew/opt/openjdk@24/libexec/openjdk.jdk/Contents/Home", -- JDK 24 path
+--                 },
+--               },
+--             },
+--           },
+--         },
+--       },
+--     },
+--     config = {
+--       ["*"] = {
+--         capabilities = {
+--           textDocument = {
+--             completion = {
+--               completionItem = {
+--                 snippetSupport = true,
+--                 preselectSupport = false,
+--                 insertReplaceSupport = false,
+--                 labelDetailsSupport = true,
+--                 deprecatedSupport = false,
+--                 commitCharactersSupport = false,
+--                 documentationFormat = { "markdown" },
+--                 resolveSupport = {
+--                   properties = { "documentation", "detail" },
+--                 },
+--               },
+--               contextSupport = false,
+--             },
+--           },
+--         },
+--         handlers = {
+--           ["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, { border = "rounded", max_width = 80 }),
+--           ["textDocument/signatureHelp"] = vim.lsp.with(
+--             vim.lsp.handlers.signature_help,
+--             { border = "rounded", max_width = 80 }
+--           ),
+--         },
+--       },
+--     },
+--     autocmds = {
+--       lsp_codelens_refresh = {
+--         cond = "textDocument/codeLens",
+--         {
+--           event = { "InsertLeave", "BufEnter" },
+--           desc = "Refresh codelens (buffer)",
+--           callback = function(args)
+--             if require("astrolsp").config.features.codelens then vim.lsp.codelens.refresh { bufnr = args.buf } end
+--           end,
+--         },
+--       },
+--     },
+--     auto_install_java_deps = {
+--       {
+--         event = "BufWritePost",
+--         pattern = { "pom.xml", "build.gradle", "build.gradle.kts" },
+--         desc = "Automatically install Java dependencies",
+--         callback = function()
+--           if vim.fn.filereadable "mvnw" == 1 or vim.fn.filereadable "pom.xml" == 1 then
+--             vim.cmd "!./mvnw dependency:resolve || mvn dependency:resolve"
+--           elseif vim.fn.filereadable "gradlew" == 1 or vim.fn.filereadable "build.gradle" == 1 then
+--             vim.cmd "!./gradlew build || gradle build"
+--           end
+--         end,
+--       },
+--     },
+--     mappings = {
+--       n = {
+--         gD = {
+--           function() vim.lsp.buf.declaration() end,
+--           desc = "Declaration of current symbol",
+--           cond = "textDocument/declaration",
+--         },
+--         ["<Leader>uY"] = {
+--           function() require("astrolsp.toggles").buffer_semantic_tokens() end,
+--           desc = "Toggle LSP semantic highlight (buffer)",
+--           cond = function(client)
+--             return client.supports_method "textDocument/semanticTokens/full" and vim.lsp.semantic_tokens ~= nil
+--           end,
+--         },
+--       },
+--     },
+--     on_attach = function(client, bufnr)
+--       -- Disable semanticTokensProvider for all clients
+--       -- client.server_capabilities.semanticTokensProvider = nil
+--     end,
+--   },
+-- }
+--
+--
+------------------------------------------------------------------------------------------------------------
+---
 
 ---@type LazySpec
 return {
@@ -222,7 +379,7 @@ return {
     formatting = {
       format_on_save = {
         enabled = true,
-        allow_filetypes = { "go", "java" },
+        allow_filetypes = { "go", "java", "php" }, -- Added PHP here
         ignore_filetypes = {},
       },
       disabled = {},
@@ -270,14 +427,27 @@ return {
         end,
         settings = {
           java = {
-            home = "/opt/homebrew/opt/openjdk@24/libexec/openjdk.jdk/Contents/Home", -- JDK 24 path
+            home = "/opt/homebrew/opt/openjdk@24/libexec/openjdk.jdk/Contents/Home",
             configuration = {
               runtimes = {
                 {
                   name = "JavaSE-24",
-                  path = "/opt/homebrew/opt/openjdk@24/libexec/openjdk.jdk/Contents/Home", -- JDK 24 path
+                  path = "/opt/homebrew/opt/openjdk@24/libexec/openjdk.jdk/Contents/Home",
                 },
               },
+            },
+          },
+        },
+      },
+      intelephense = {
+        filetypes = { "php" },
+        root_dir = function(fname)
+          return require("lspconfig.util").root_pattern("composer.json", ".git")(fname) or vim.fn.getcwd() -- fallback to current working directory
+        end,
+        settings = {
+          intelephense = {
+            files = {
+              maxSize = 1000000,
             },
           },
         },

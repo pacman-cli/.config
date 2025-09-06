@@ -1,3 +1,4 @@
+
 # Theme configuration
 # theme = "catppuccin-frappe"
 
@@ -5,30 +6,14 @@
 # Disable ligatures
 # font-features = liga=0
 #
-# window-height = 30
-# window-width = 110
-# # window-features = ["-liga"] 
+ # window-features = ["-liga"] 
 # title = "My Custom Terminal"
-#
-# # Keybindings configuration
-# keybind = "ctrl+b c" = "new_tab"
-# keybind = "ctrl+b p" = "prev_tab"
-# keybind = "ctrl+b n" = "next_tab"
-# keybind = "ctrl+b o" = "tab_overview"
-# keybind = "ctrl+b \\" = "new_split:right"
-# keybind = "ctrl+b -" = "new_split:down"
-# keybind = "ctrl+b x" = "close_surface"
-# keybind = "ctrl+b =" = "equalize"
-# keybind = "ctrl+shift+h" = "resize_left:10"
-# keybind = "ctrl+shift+l" = "resize_right:10"
-# keybind = "ctrl+shift+k" = "resize_up:10"
-# keybind = "ctrl+shift+j" = "resize_down:10"
-# keybind = "ctrl+b r" = "reload_config"
-# font-family = BerkeleyMono Nerd Font
-theme = 3024 Night
+#font-family = BerkeleyMono Nerd Font
+# theme = 3024 Night
+# theme ="catppuccin-frappe"
+theme ="catppuccin-macchiato"
 font-family = "DankMono Nerd Font"
-# font-weight = 100
-font-size = 24
+font-size = 25
 #font-family = Iosevka Nerd Font
 # font-family = SFMono Nerd Font 
 # font-size = 20
@@ -92,18 +77,3 @@ keybind = cmd+s>e=equalize_splits
 
 # other
 copy-on-select = clipboard
-
-#
-background=#011423
-foreground=#CBE0F0
-cursor-text=#011423
-# color_black=#214969
-# color_red=#E52E2E
-# color_green=#44FFB1
-# color_yellow=#FFE073
-# color_blue=#0FC5ED
-# color_magenta=#A277FF
-# color_cyan=#24EAF7
-# color_white=#24EAF7
-#
-#
