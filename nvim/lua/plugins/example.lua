@@ -41,14 +41,46 @@ return {
         local jdtls_bin = jdtls_path .. "/bin/jdtls"
         local home = vim.fn.expand("~")
         local workspace_dir = home .. "/.local/share/jdtls-workspace/" .. vim.fn.fnamemodify(vim.fn.getcwd(), ":p:h:t")
+        
+        -- Configure environment to use Java 21 for jdtls
+        local java21_home = "/Users/puspo/Library/Java/JavaVirtualMachines/ms-21.0.8/Contents/Home"
+        
         vim.api.nvim_create_autocmd("FileType", {
           pattern = "java",
           callback = function()
+            -- Set JAVA_HOME for jdtls to use Java 21
+            local original_java_home = vim.fn.getenv("JAVA_HOME")
+            vim.fn.setenv("JAVA_HOME", java21_home)
+            
             require("jdtls").start_or_attach({
               cmd = { jdtls_bin },
               root_dir = require("jdtls.setup").find_root({ ".git", "mvnw", "gradlew", "pom.xml", "build.gradle" }),
-              workspace_folder = workspace_dir,
+              settings = {
+                java = {
+                  home = java21_home,
+                  configuration = {
+                    runtimes = {
+                      {
+                        name = "JavaSE-17",
+                        path = "/Library/Java/JavaVirtualMachines/temurin-17.jdk/Contents/Home",
+                      },
+                      {
+                        name = "JavaSE-21",
+                        path = java21_home,
+                      },
+                    },
+                  },
+                },
+              },
+              init_options = {
+                bundles = {},
+              },
             })
+            
+            -- Restore original JAVA_HOME after jdtls starts
+            if original_java_home then
+              vim.fn.setenv("JAVA_HOME", original_java_home)
+            end
           end,
         })
       end,
@@ -190,6 +222,13 @@ return {
         },
   -- treesitter, mason and typescript.nvim. So instead of the above, you can use:
   { import = "lazyvim.plugins.extras.lang.typescript" },
+
+  -- Auto close and rename HTML/XML tags
+  {
+    "windwp/nvim-ts-autotag",
+    event = "LazyFile",
+    opts = {},
+  },
 
   -- add more treesitter parsers
   {
@@ -343,9 +382,46 @@ return {
       -- Markdown & Docs
       {
         "iamcco/markdown-preview.nvim",
+        cmd = { "MarkdownPreviewToggle", "MarkdownPreview", "MarkdownPreviewStop" },
         ft = { "markdown" },
-        build = function() vim.fn["mkdp#util#install"]() end,
-        config = true,
+        build = "cd app && npm install",
+        init = function()
+          vim.g.mkdp_filetypes = { "markdown" }
+        end,
+        keys = {
+          { "<leader>mp", "<cmd>MarkdownPreview<cr>", desc = "Markdown Preview", ft = "markdown" },
+          { "<leader>ms", "<cmd>MarkdownPreviewStop<cr>", desc = "Markdown Preview Stop", ft = "markdown" },
+          { "<leader>mt", "<cmd>MarkdownPreviewToggle<cr>", desc = "Markdown Preview Toggle", ft = "markdown" },
+        },
+        config = function()
+          vim.g.mkdp_auto_start = 0
+          vim.g.mkdp_auto_close = 1
+          vim.g.mkdp_refresh_slow = 0
+          vim.g.mkdp_command_for_global = 0
+          vim.g.mkdp_open_to_the_world = 0
+          vim.g.mkdp_open_ip = ''
+          vim.g.mkdp_browser = ''
+          vim.g.mkdp_echo_preview_url = 0
+          vim.g.mkdp_browserfunc = ''
+          vim.g.mkdp_preview_options = {
+            mkit = {},
+            katex = {},
+            uml = {},
+            maid = {},
+            disable_sync_scroll = 0,
+            sync_scroll_type = 'middle',
+            hide_yaml_meta = 1,
+            sequence_diagrams = {},
+            flowchart_diagrams = {},
+            content_editable = false,
+            disable_filename = 0
+          }
+          vim.g.mkdp_markdown_css = ''
+          vim.g.mkdp_highlight_css = ''
+          vim.g.mkdp_port = ''
+          vim.g.mkdp_page_title = '「${name}」'
+          vim.g.mkdp_filetypes = {'markdown'}
+        end,
       },
       {
         "MeanderingProgrammer/render-markdown.nvim",
@@ -381,6 +457,92 @@ return {
         },
         dependencies = {
           "nvim-lua/plenary.nvim",
+        },
+      },
+
+      -- Simple Jira integration (custom implementation)
+      {
+        "nvim-lua/plenary.nvim", -- We'll use this for HTTP requests
+        config = function()
+          -- Simple Jira integration using curl
+          vim.api.nvim_create_user_command("JiraOpen", function(opts)
+            local issue_key = opts.args
+            if issue_key == "" then
+              issue_key = vim.fn.input("Enter Jira issue key: ")
+            end
+            if issue_key ~= "" then
+              local url = "https://sk1969363-1757929020957.atlassian.net/browse/" .. issue_key
+              vim.fn.system("open " .. url) -- macOS
+            end
+          end, { nargs = "?" })
+
+          vim.api.nvim_create_user_command("JiraSearch", function()
+            local query = vim.fn.input("Enter JQL query: ")
+            if query ~= "" then
+              local url = "https://sk1969363-1757929020957.atlassian.net/issues/?jql=" .. vim.fn.escape(query, " ")
+              vim.fn.system("open '" .. url .. "'")
+            end
+          end, {})
+
+          vim.api.nvim_create_user_command("JiraMyIssues", function()
+            local url = "https://sk1969363-1757929020957.atlassian.net/issues/?filter=-1"
+            vim.fn.system("open " .. url)
+          end, {})
+        end,
+        keys = {
+          { "<leader>jo", "<cmd>JiraOpen<cr>", desc = "Open Jira Issue" },
+          { "<leader>js", "<cmd>JiraSearch<cr>", desc = "Search Jira" },
+          { "<leader>jm", "<cmd>JiraMyIssues<cr>", desc = "My Jira Issues" },
+        },
+      },
+
+      -- Transparency plugin for Ghosty compatibility
+      {
+        "xiyaowong/transparent.nvim",
+        opts = {
+          groups = {
+            'Normal', 'NormalNC', 'Comment', 'Constant', 'Special', 'Identifier',
+            'Statement', 'PreProc', 'Type', 'Underlined', 'Todo', 'String', 'Function',
+            'Conditional', 'Repeat', 'Operator', 'Structure', 'LineNr', 'NonText',
+            'SignColumn', 'CursorColumn', 'CursorLine', 'TabLine', 'TabLineFill', 'StatusLine',
+            'StatusLineNC', 'Search', 'IncSearch', 'Pmenu', 'PmenuSel', 'PmenuSbar', 'PmenuThumb',
+            'Question', 'SpecialKey', 'VertSplit', 'Visual', 'VisualNOS', 'WarningMsg',
+            'WildMenu', 'Folded', 'FoldColumn', 'DiffAdd', 'DiffChange', 'DiffDelete',
+            'DiffText', 'GitSignsAdd', 'GitSignsChange', 'GitSignsDelete', 'TelescopeNormal',
+            'TelescopeBorder', 'NeoTreeNormal', 'NeoTreeNormalNC', 'WhichKeyFloat'
+          },
+          extra_groups = {},
+          exclude_groups = {},
+        },
+        keys = {
+          { "<leader>tt", "<cmd>TransparentToggle<cr>", desc = "Toggle Transparency" },
+        },
+      },
+
+      -- Neo-tree file explorer with auto-close on file open
+      {
+        "nvim-neo-tree/neo-tree.nvim",
+        opts = {
+          close_if_last_window = true,
+          window = {
+            position = "left",
+            width = 30,
+          },
+          filesystem = {
+            follow_current_file = {
+              enabled = true,
+            },
+            hijack_netrw_behavior = "open_default",
+          },
+          event_handlers = {
+            {
+              event = "file_opened",
+              handler = function()
+                -- Auto close neo-tree when a file is opened
+                require("neo-tree.command").execute({ action = "close" })
+              end,
+            },
+          },
         },
       },
 }
