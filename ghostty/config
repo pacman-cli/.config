@@ -1,6 +1,6 @@
 
 # Theme configuration
-# theme = "catppuccin-frappe"
+theme = Material Ocean
 
 # Font configuration
 # Disable ligatures
@@ -11,9 +11,31 @@
 #font-family = BerkeleyMono Nerd Font
 # theme = 3024 Night
 # theme ="catppuccin-frappe"
-theme ="catppuccin-macchiato"
+# theme = tokyo_night
+# Use built-in theme or specify colors directly
+# Catppuccin Macchiato color scheme
+# background = 24273a
+# foreground = cad3f5
+#
+# # Catppuccin Macchiato palette
+# palette = 0=494d64
+# palette = 1=ed8796
+# palette = 2=a6da95
+# palette = 3=eed49f
+# palette = 4=8aadf4
+# palette = 5=f5bde6
+# palette = 6=8bd5ca
+# palette = 7=a5adcb
+# palette = 8=5b6078
+# palette = 9=ed8796
+# palette = 10=a6da95
+# palette = 11=eed49f
+# palette = 12=8aadf4
+# palette = 13=f5bde6
+# palette = 14=8bd5ca
+# palette = 15=b8c0e0
 font-family = "DankMono Nerd Font"
-font-size = 25
+font-size = 23
 #font-family = Iosevka Nerd Font
 # font-family = SFMono Nerd Font 
 # font-size = 20
@@ -25,8 +47,7 @@ cursor-style = block
 # adjust-cell-height = 35%
 
 background-blur=true
-# background-opacity=0.75  
-
+# background-opacity=0.80
 
 mouse-hide-while-typing = true
 mouse-scroll-multiplier = 2
@@ -37,7 +58,6 @@ window-save-state = always
 window-colorspace = "display-p3"
 # background = 1C2021
 # foreground = d4be98
-
 # keybindings
 keybind = cmd+s>r=reload_config
 keybind = cmd+s>x=close_surface
