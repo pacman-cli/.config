@@ -43,7 +43,7 @@ return {
         local workspace_dir = home .. "/.local/share/jdtls-workspace/" .. vim.fn.fnamemodify(vim.fn.getcwd(), ":p:h:t")
         
         -- Configure environment to use Java 21 for jdtls
-        local java21_home = "/Users/puspo/Library/Java/JavaVirtualMachines/ms-21.0.8/Contents/Home"
+        local java21_home = vim.fn.getenv("JAVA_HOME") or "/usr/lib/jvm/java-21-openjdk"
         
         vim.api.nvim_create_autocmd("FileType", {
           pattern = "java",
@@ -62,7 +62,7 @@ return {
                     runtimes = {
                       {
                         name = "JavaSE-17",
-                        path = "/Library/Java/JavaVirtualMachines/temurin-17.jdk/Contents/Home",
+                        path = vim.fn.getenv("JAVA_17_HOME") or "/usr/lib/jvm/java-17-openjdk",
                       },
                       {
                         name = "JavaSE-21",
@@ -116,53 +116,32 @@ return {
   --   end,
   -- },
 
-  -- -- change some telescope options and a keymap to browse plugin files
-  -- {
-  --   "nvim-telescope/telescope.nvim",
-  --   keys = {
-  --     -- add a keymap to browse plugin files
-  --     -- stylua: ignore
-  --     {
-  --       "<leader>fp",
-  --       function() require("telescope.builtin").find_files({ cwd = require("lazy.core.config").options.root }) end,
-  --       desc = "Find Plugin File",
-  --     },
-  --   },
-  --   -- change some options
-  --   opts = {
-  --     defaults = {
-  --       layout_strategy = "horizontal",
-  --       layout_config = { prompt_position = "top" },
-  --       sorting_strategy = "ascending",
-  --       winblend = 0,
-  --     },
-  --   },
-  -- },
-    -- change some telescope options and add keymaps to browse plugin files and show keybindings
-    {
-      "nvim-telescope/telescope.nvim",
-      keys = {
-        -- stylua: ignore
-        {
-          "<leader>fp",
-          function() require("telescope.builtin").find_files({ cwd = require("lazy.core.config").options.root }) end,
-          desc = "Find Plugin File",
-        },
-        {
-          "<leader>fk",
-          function() require("telescope.builtin").keymaps() end,
-          desc = "Show All Keybindings",
-        },
+  -- Duplicate telescope configuration removed - using the one below
+  -- change some telescope options and add keymaps to browse plugin files and show keybindings
+  {
+    "nvim-telescope/telescope.nvim",
+    keys = {
+      -- stylua: ignore
+      {
+        "<leader>fp",
+        function() require("telescope.builtin").find_files({ cwd = require("lazy.core.config").options.root }) end,
+        desc = "Find Plugin File",
       },
-      opts = {
-        defaults = {
-          layout_strategy = "horizontal",
-          layout_config = { prompt_position = "top" },
-          sorting_strategy = "ascending",
-          winblend = 0,
-        },
+      {
+        "<leader>fk",
+        function() require("telescope.builtin").keymaps() end,
+        desc = "Show All Keybindings",
       },
     },
+    opts = {
+      defaults = {
+        layout_strategy = "horizontal",
+        layout_config = { prompt_position = "top" },
+        sorting_strategy = "ascending",
+        winblend = 0,
+      },
+    },
+  },
 
   -- -- add pyright to lspconfig
   -- {
@@ -177,50 +156,15 @@ return {
   --   },
   -- },
 
-  -- add tsserver and setup with typescript.nvim instead of lspconfig
+  -- Rainbow delimiters for colored brackets
   {
-    "neovim/nvim-lspconfig",
-    dependencies = {
-      "jose-elias-alvarez/typescript.nvim",
-      init = function()
-        require("lazyvim.util").lsp.on_attach(function(_, buffer)
-          -- stylua: ignore
-          vim.keymap.set( "n", "<leader>co", "TypescriptOrganizeImports", { buffer = buffer, desc = "Organize Imports" })
-          vim.keymap.set("n", "<leader>cR", "TypescriptRenameFile", { desc = "Rename File", buffer = buffer })
-        end)
-      end,
-    },
-    ---@class PluginLspOpts
-    opts = {
-      ---@type lspconfig.options
-      servers = {
-        -- tsserver will be automatically installed with mason and loaded with lspconfig
-        tsserver = {},
-      },
-      -- you can do any additional lsp server setup here
-      -- return true if you don't want this server to be setup with lspconfig
-      ---@type table<string, fun(server:string, opts:_.lspconfig.options):boolean?>
-      setup = {
-        -- example to setup with typescript.nvim
-        tsserver = function(_, opts)
-          require("typescript").setup({ server = opts })
-          return true
-        end,
-        -- Specify * to use this function as a fallback for any server
-        -- ["*"] = function(server, opts) end,
-      },
-    },
+    'HiPhish/rainbow-delimiters.nvim',
+    config = function()
+      require('rainbow-delimiters.setup').setup({})
+    end,
   },
-
-  -- for typescript, LazyVim also includes extra specs to properly setup lspconfig,
-        -- Rainbow delimiters for colored brackets
-        {
-          'HiPhish/rainbow-delimiters.nvim',
-          config = function()
-            require('rainbow-delimiters.setup').setup({})
-          end,
-        },
-  -- treesitter, mason and typescript.nvim. So instead of the above, you can use:
+  
+  -- TypeScript setup with proper inlay hints - includes vtsls, treesitter, mason, and typescript.nvim
   { import = "lazyvim.plugins.extras.lang.typescript" },
 
   -- Auto close and rename HTML/XML tags
@@ -253,28 +197,16 @@ return {
     },
   },
 
-  -- since `vim.tbl_deep_extend`, can only merge tables and not lists, the code above
-  -- would overwrite `ensure_installed` with the new value.
-  -- If you'd rather extend the default config, use the code below instead:
-  {
-    "nvim-treesitter/nvim-treesitter",
-    opts = function(_, opts)
-      -- add tsx and treesitter
-      vim.list_extend(opts.ensure_installed, {
-        "tsx",
-        "typescript",
-      })
-    end,
-  },
+  -- Duplicate treesitter configuration removed - using the one above
 
   -- WakaTime plugin for coding activity tracking
   {
     "wakatime/vim-wakatime",
     lazy = false,
   },
-    -- Premium lualine config with icons and separators
-      {
-        "nvim-lualine/lualine.nvim",
+  -- Premium lualine config with icons and separators
+  {
+    "nvim-lualine/lualine.nvim",
         event = "VeryLazy",
         opts = function(_, opts)
           -- Add icons to default sections, keep default pattern/layout
@@ -471,7 +403,8 @@ return {
               issue_key = vim.fn.input("Enter Jira issue key: ")
             end
             if issue_key ~= "" then
-              local url = "https://sk1969363-1757929020957.atlassian.net/browse/" .. issue_key
+              local jira_url = vim.fn.getenv("JIRA_URL") or "https://your-company.atlassian.net"
+              local url = jira_url .. "/browse/" .. issue_key
               vim.fn.system("open " .. url) -- macOS
             end
           end, { nargs = "?" })
@@ -479,13 +412,15 @@ return {
           vim.api.nvim_create_user_command("JiraSearch", function()
             local query = vim.fn.input("Enter JQL query: ")
             if query ~= "" then
-              local url = "https://sk1969363-1757929020957.atlassian.net/issues/?jql=" .. vim.fn.escape(query, " ")
+              local jira_url = vim.fn.getenv("JIRA_URL") or "https://your-company.atlassian.net"
+              local url = jira_url .. "/issues/?jql=" .. vim.fn.escape(query, " ")
               vim.fn.system("open '" .. url .. "'")
             end
           end, {})
 
           vim.api.nvim_create_user_command("JiraMyIssues", function()
-            local url = "https://sk1969363-1757929020957.atlassian.net/issues/?filter=-1"
+            local jira_url = vim.fn.getenv("JIRA_URL") or "https://your-company.atlassian.net"
+            local url = jira_url .. "/issues/?filter=-1"
             vim.fn.system("open " .. url)
           end, {})
         end,

@@ -4,13 +4,13 @@
 
 return {
   -- REQUIRED: Your Jira instance URL (without trailing slash)
-  jira_url = "https://your-company.atlassian.net",
+  jira_url = "https://sk1969363-1758355746781.atlassian.net/",
 
   -- REQUIRED: Your Jira username/email
-  username = "your-email@company.com",
+  username = "mpuspo2310304@bscse.uiu.ac.bd",
 
   -- REQUIRED: Your Jira API token (generate at: https://id.atlassian.com/manage-profile/security/api-tokens)
-  api_token = "your-api-token-here",
+  api_token = "ATATT3xFfGF0f-qOjVMSZNnLSqQFXvvptqMounpv272PEcV0Onmy8d36uxGa7VxF7X4ueqW5KwCP4kzFwypm6w28w0eV3Z-xOvBDJOvMhEv4t5zr-dYiMaXlOLCyf2J07OcNU2ber6HBa8LtKzRCALWyW3e0-BFce6CQlZqIcu0Jj4txCiXvvU0=4A7EA4D",
 
   -- OPTIONAL: Default project key
   default_project = "PROJECT",
