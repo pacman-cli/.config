@@ -34,8 +34,9 @@ theme = Material Ocean
 # palette = 13=f5bde6
 # palette = 14=8bd5ca
 # palette = 15=b8c0e0
-font-family = "DankMono Nerd Font"
-font-size = 23
+# font-family = "DankMono Nerd Font"
+font-family = "Fira Code"
+font-size = 26
 #font-family = Iosevka Nerd Font
 # font-family = SFMono Nerd Font 
 # font-size = 20
