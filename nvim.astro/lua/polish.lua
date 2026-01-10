@@ -7,9 +7,7 @@ local function setup_dev_keymaps()
   -- Language-specific keymaps
   local function map(mode, lhs, rhs, opts)
     local options = { noremap = true, silent = true }
-    if opts then
-      options = vim.tbl_extend("force", options, opts)
-    end
+    if opts then options = vim.tbl_extend("force", options, opts) end
     vim.keymap.set(mode, lhs, rhs, options)
   end
 
@@ -161,7 +159,7 @@ local function setup_dev_options()
   vim.opt.timeoutlen = 300
   vim.opt.clipboard = "unnamedplus"
   vim.opt.undofile = true
-  vim.opt.undodir = vim.fn.stdpath("data") .. "/undodir"
+  vim.opt.undodir = vim.fn.stdpath "data" .. "/undodir"
   vim.opt.backup = false
   vim.opt.writebackup = false
   vim.opt.swapfile = false
@@ -173,7 +171,7 @@ local function safe_setup()
     setup_dev_options()
     setup_dev_keymaps()
   end)
-  
+
   if not ok then
     vim.notify("Error in polish.lua: " .. tostring(err), vim.log.levels.ERROR, {
       title = "Configuration Error",
@@ -189,11 +187,17 @@ safe_setup()
 vim.api.nvim_create_autocmd("User", {
   pattern = "AstroNvimStarted",
   callback = function()
-    vim.schedule(function()
-      vim.notify("🚀 Enhanced AstroNeovim configuration loaded for Java, C++, Go, and Python development!", vim.log.levels.INFO, {
-        title = "AstroNeovim Enhanced",
-        timeout = 3000,
-      })
-    end)
+    vim.schedule(
+      function()
+        vim.notify(
+          "🚀 Enhanced AstroNeovim configuration loaded for Java, C++, Go, and Python development!",
+          vim.log.levels.INFO,
+          {
+            title = "AstroNeovim Enhanced",
+            timeout = 3000,
+          }
+        )
+      end
+    )
   end,
 })

@@ -3,14 +3,14 @@
 ---@type LazySpec
 return {
   -- == Development Enhancements ==
-  
+
   -- Better comments with language-specific support
   {
     "numToStr/Comment.nvim",
     opts = {
       -- Add language-specific comment patterns
-      toggler = { line = '<leader>cc', block = '<leader>cb' },
-      opleader = { line = '<leader>c', block = '<leader>b' },
+      toggler = { line = "<leader>cc", block = "<leader>cb" },
+      opleader = { line = "<leader>c", block = "<leader>b" },
     },
   },
 
@@ -70,7 +70,7 @@ return {
     "ray-x/go.nvim",
     dependencies = { "ray-x/guihua.lua" },
     config = function()
-      require("go").setup({
+      require("go").setup {
         -- Go-specific settings
         lsp_cfg = {
           settings = {
@@ -96,7 +96,7 @@ return {
         test_efm = true,
         -- Enable go mod tidy
         run_in_floaterm = true,
-      })
+      }
     end,
     ft = { "go", "gomod" },
     build = ':lua require("go.install").update_all_sync()',
@@ -106,9 +106,7 @@ return {
   {
     "mfussenegger/nvim-dap-python",
     ft = { "python" },
-    config = function()
-      require("dap-python").setup("python")
-    end,
+    config = function() require("dap-python").setup "python" end,
   },
 
   -- == Code Quality & Formatting ==
@@ -137,10 +135,10 @@ return {
       "nvim-neotest/neotest-python",
     },
     config = function()
-      require("neotest").setup({
+      require("neotest").setup {
         adapters = {
-          require("neotest-go"),
-          require("neotest-python"),
+          require "neotest-go",
+          require "neotest-python",
         },
         status = { virtual_text = true },
         output = { open_on_run = true },
@@ -153,7 +151,7 @@ return {
             end
           end,
         },
-      })
+      }
     end,
   },
 
@@ -173,28 +171,28 @@ return {
   {
     "windwp/nvim-autopairs",
     config = function(plugin, opts)
-      require("astronvim.plugins.configs.nvim-autopairs")(plugin, opts)
-      local npairs = require("nvim-autopairs")
-      local Rule = require("nvim-autopairs.rule")
-      local cond = require("nvim-autopairs.conds")
+      require "astronvim.plugins.configs.nvim-autopairs"(plugin, opts)
+      local npairs = require "nvim-autopairs"
+      local Rule = require "nvim-autopairs.rule"
+      local cond = require "nvim-autopairs.conds"
 
       -- Add language-specific rules
-      npairs.add_rules({
+      npairs.add_rules {
         -- Java/C++ style
         Rule("(", ")", { "java", "cpp", "c", "go", "python" })
-          :with_pair(cond.not_before_regex("%s*[%)%]%}]*"))
+          :with_pair(cond.not_before_regex "%s*[%)%]%}]*")
           :with_move(cond.none())
           :with_del(cond.none()),
-        
+
         -- String quotes
         Rule('"', '"', { "java", "cpp", "c", "go", "python" })
-          :with_pair(cond.not_before_regex("%s*[%)%]%}]*"))
+          :with_pair(cond.not_before_regex "%s*[%)%]%}]*")
           :with_move(cond.none()),
-        
+
         Rule("'", "'", { "java", "cpp", "c", "go", "python" })
-          :with_pair(cond.not_before_regex("%s*[%)%]%}]*"))
+          :with_pair(cond.not_before_regex "%s*[%)%]%}]*")
           :with_move(cond.none()),
-      })
+      }
     end,
   },
 
@@ -202,9 +200,9 @@ return {
   {
     "L3MON4D3/LuaSnip",
     config = function(plugin, opts)
-      require("astronvim.plugins.configs.luasnip")(plugin, opts)
-      local luasnip = require("luasnip")
-      
+      require "astronvim.plugins.configs.luasnip"(plugin, opts)
+      local luasnip = require "luasnip"
+
       -- Add language-specific snippet filetypes
       luasnip.filetype_extend("java", { "java" })
       luasnip.filetype_extend("cpp", { "cpp", "c" })
@@ -254,7 +252,7 @@ return {
     "ray-x/lsp_signature.nvim",
     event = "BufRead",
     config = function()
-      require("lsp_signature").setup({
+      require("lsp_signature").setup {
         bind = true,
         handler_opts = {
           border = "rounded",
@@ -267,7 +265,7 @@ return {
         max_width = 120,
         padding = " ",
         toggle_key = "<C-k>",
-      })
+      }
     end,
   },
 
@@ -307,7 +305,7 @@ return {
   {
     "rebelot/heirline.nvim",
     opts = function(_, opts)
-      local status = require("astronvim.utils.status")
+      local status = require "astronvim.utils.status"
       opts.statusline = {
         hl = { fg = "fg", bg = "bg" },
         status.component.mode(),
@@ -321,7 +319,7 @@ return {
         status.component.lsp(),
         status.component.treesitter(),
         status.component.nav(),
-        status.component.mode({ surround = { separator = "right" } }),
+        status.component.mode { surround = { separator = "right" } },
       }
       return opts
     end,

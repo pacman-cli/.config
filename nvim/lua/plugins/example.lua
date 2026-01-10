@@ -2,12 +2,12 @@
 -- stylua: ignore
 -- if true then return {} end
 
--- Highlight function names and 'return' keyword in bold
+-- Highlight function names and 'return' keyword in bold (without italic)
 vim.api.nvim_create_autocmd("ColorScheme", {
   pattern = "*",
   callback = function()
-    vim.api.nvim_set_hl(0, "@function", { bold = true })
-    vim.api.nvim_set_hl(0, "@keyword.return", { bold = true })
+    vim.api.nvim_set_hl(0, "@function", { bold = false })
+    vim.api.nvim_set_hl(0, "@keyword.return", { bold = true, italic = false })
   end,
 })
 return {
@@ -34,57 +34,32 @@ return {
     },
   },
 
-  -- Java LSP (jdtls) setup for LazyVim
+  -- Java configuration: use Java 21 for jdtls
   {
     "mfussenegger/nvim-jdtls",
-    ft = { "java" },
-    config = function()
-      local mason_registry = require("mason-registry")
-      local jdtls_path = mason_registry.get_package("jdtls"):get_install_path()
-      local jdtls_bin = jdtls_path .. "/bin/jdtls"
-      local home = vim.fn.expand("~")
-      local workspace_dir = home .. "/.local/share/jdtls-workspace/" .. vim.fn.fnamemodify(vim.fn.getcwd(), ":p:h:t")
-      -- Configure environment to use Java 21 for jdtls
-      local java21_home = vim.fn.getenv("JAVA_HOME") or "/usr/lib/jvm/java-21-openjdk"
-      vim.api.nvim_create_autocmd("FileType", {
-        pattern = "java",
-        callback = function()
-          -- Set JAVA_HOME for jdtls to use Java 21
-          local original_java_home = vim.fn.getenv("JAVA_HOME")
-          vim.fn.setenv("JAVA_HOME", java21_home)
-          require("jdtls").start_or_attach({
-            cmd = { jdtls_bin },
-            root_dir = require("jdtls.setup").find_root({ ".git", "mvnw", "gradlew", "pom.xml", "build.gradle" }),
-            settings = {
-              java = {
-                home = java21_home,
-                configuration = {
-                  runtimes = {
-                    {
-                      name = "JavaSE-17",
-                      path = vim.fn.getenv("JAVA_17_HOME") or "/usr/lib/jvm/java-17-openjdk",
-                    },
-                    {
-                      name = "JavaSE-21",
-                      path = java21_home,
-                    },
-                  },
-                },
-              },
-            },
-            init_options = {
-              bundles = {},
-            },
-          })
+    optional = true,
+    opts = function(_, opts)
+      -- Find Java 21 dynamically
+      local java21_home = nil
+      if vim.fn.executable("/usr/libexec/java_home") == 1 then
+        local result = vim.fn.system("/usr/libexec/java_home -v 21 2>&1")
+        if vim.v.shell_error == 0 then
+          java21_home = vim.fn.trim(result)
+        end
+      end
 
-          -- Restore original JAVA_HOME after jdtls starts
-          if original_java_home then
-            vim.fn.setenv("JAVA_HOME", original_java_home)
-          end
-        end,
-      })
+      -- Override the cmd to use Java 21 if found
+      if java21_home and java21_home ~= "" then
+        opts.cmd = {
+          vim.fn.exepath("jdtls"),
+          "--java-executable",
+          java21_home .. "/bin/java",
+        }
+      end
+      return opts
     end,
   },
+
   -- -- add gruvbox
   -- { "ellisonleao/gruvbox.nvim" },
   -- -- Configure LazyVim to load gruvbox
@@ -529,27 +504,40 @@ return {
   -- Neo-tree file explorer with auto-close on file open
   {
     "nvim-neo-tree/neo-tree.nvim",
-    opts = {
-      close_if_last_window = true,
-      window = {
-        position = "left",
-        width = 30,
-      },
-      filesystem = {
-        follow_current_file = {
-          enabled = true,
-        },
-        hijack_netrw_behavior = "open_default",
-      },
-      event_handlers = {
-        {
-          event = "file_opened",
-          handler = function()
-            -- Auto close neo-tree when a file is opened
-            require("neo-tree.command").execute({ action = "close" })
-          end,
-        },
-      },
-    },
+    opts = function(_, opts)
+      -- Merge with LazyVim's defaults
+      opts.close_if_last_window = true
+      opts.window = opts.window or {}
+      opts.window.width = 30
+      opts.filesystem = opts.filesystem or {}
+      opts.filesystem.follow_current_file = opts.filesystem.follow_current_file or {}
+      opts.filesystem.follow_current_file.enabled = true
+      opts.filesystem.hijack_netrw_behavior = "open_default"
+      
+      -- Add event handler for auto-close when file is opened
+      opts.event_handlers = opts.event_handlers or {}
+      table.insert(opts.event_handlers, {
+        event = "file_opened",
+        handler = function()
+          -- Auto close neo-tree when a file is opened
+          -- Use a small delay to avoid race conditions
+          vim.defer_fn(function()
+            local ok, manager = pcall(require, "neo-tree.sources.manager")
+            if not ok then
+              return
+            end
+            local state = manager.get_state("filesystem")
+            if state and state.winid and vim.api.nvim_win_is_valid(state.winid) then
+              -- Only close if there are other windows open
+              local wins = vim.api.nvim_list_wins()
+              if #wins > 1 then
+                pcall(vim.cmd, "Neotree close filesystem")
+              end
+            end
+          end, 100)
+        end,
+      })
+      return opts
+    end,
   },
 }

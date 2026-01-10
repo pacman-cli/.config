@@ -9,7 +9,7 @@ return {
       "lua",
       "vim",
       "vimdoc",
-      
+
       -- Target languages
       "java",
       "cpp",
@@ -19,7 +19,7 @@ return {
       "gosum",
       "gowork",
       "python",
-      
+
       -- Web development
       "javascript",
       "typescript",
@@ -30,7 +30,7 @@ return {
       "json",
       "yaml",
       "toml",
-      
+
       -- Markup and config
       "markdown",
       "markdown_inline",
@@ -41,7 +41,7 @@ return {
       "git_rebase",
       "git_commit",
       "gitattributes",
-      
+
       -- Additional useful languages
       "rust",
       "sql",

@@ -3,15 +3,13 @@ vim.keymap.set("i", "jj", "<Esc>", { noremap = true, silent = true })
 vim.keymap.set("n", "<leader>E", function()
   require("neo-tree.command").execute({
     source = "filesystem",
-    dir = vim.fn.getcwd(),
-    reveal = true,
     toggle = true,
-    position = "left",
-    cwd = "/",
+    reveal = true,
+    reveal_force_cwd = true,
   })
-end, { desc = "Neo-tree Explorer (Root Dir)" })
+end, { desc = "Neo-tree Explorer (Reveal Current File)" })
 vim.keymap.set("n", "<leader>e", function()
-  require("neo-tree.command").execute({ source = "filesystem", toggle = true, position = "left" })
+  require("neo-tree.command").execute({ source = "filesystem", toggle = true })
 end, { desc = "Neo-tree Explorer Toggle" })
 
 -- Code actions and hover
