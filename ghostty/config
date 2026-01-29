@@ -1,4 +1,3 @@
-
 # Theme configuration
 theme = Material Ocean
 
@@ -48,7 +47,7 @@ cursor-style = block
 # adjust-cell-height = 35%
 
 background-blur=true
-# background-opacity=0.80
+# background-opacity=0.90
 
 mouse-hide-while-typing = true
 mouse-scroll-multiplier = 2
