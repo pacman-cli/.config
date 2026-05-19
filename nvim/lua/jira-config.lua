@@ -10,7 +10,11 @@ return {
   username = "mpuspo2310304@bscse.uiu.ac.bd",
 
   -- REQUIRED: Your Jira API token (generate at: https://id.atlassian.com/manage-profile/security/api-tokens)
-  api_token = "ATATT3xFfGF0f-qOjVMSZNnLSqQFXvvptqMounpv272PEcV0Onmy8d36uxGa7VxF7X4ueqW5KwCP4kzFwypm6w28w0eV3Z-xOvBDJOvMhEv4t5zr-dYiMaXlOLCyf2J07OcNU2ber6HBa8LtKzRCALWyW3e0-BFce6CQlZqIcu0Jj4txCiXvvU0=4A7EA4D",
+  -- Set via: export JIRA_API_TOKEN=your-token-here
+  api_token = (function()
+    local t = vim.fn.getenv("JIRA_API_TOKEN")
+    return (t ~= vim.NIL and t) or ""
+  end)(),
 
   -- OPTIONAL: Default project key
   default_project = "PROJECT",

@@ -12,6 +12,4 @@ vim.keymap.set("n", "<leader>e", function()
   require("neo-tree.command").execute({ source = "filesystem", toggle = true })
 end, { desc = "Neo-tree Explorer Toggle" })
 
--- Code actions and hover
-vim.keymap.set("n", "<leader>la", vim.lsp.buf.code_action, { desc = "Code Action" })
-vim.keymap.set("n", "K", vim.lsp.buf.hover, { desc = "Hover Info" })
+-- Code actions and hover are defined in plugins/lsp.lua

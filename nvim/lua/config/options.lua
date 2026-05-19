@@ -18,6 +18,9 @@ vim.opt.listchars = {
 }
 vim.opt.list = true -- Enable showing listchars
 
+-- Global statusline (recommended for avante.nvim sidebar rendering)
+vim.opt.laststatus = 3
+
 -- Transparency settings for Ghosty terminal
 vim.opt.termguicolors = true -- Enable 24-bit RGB colors
 vim.opt.winblend = 0 -- Window transparency (0-100, 0 = opaque)
