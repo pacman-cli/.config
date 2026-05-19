@@ -17,10 +17,11 @@ option_as_alt = "Both"
 [font]
 # normal.family = "UbuntuMono Nerd Font Mono"
 # size = 19
-normal.family = "MesloLGS Nerd Font Mono"
+normal.family = "DankMono Nerd Font Mono"
+# normal.family = "MesloLGS Nerd Font Mono"
 # normal.family = "CaskaydiaCove Nerd Font Mono"
 
- # normal.family = "DankMono Nerd Font"
+# normal.family = "DankMono Nerd Font"
 
 # normal.family = "Cascadia Code"
 size = 23

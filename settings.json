@@ -175,7 +175,6 @@
   "explorer.confirmDragAndDrop": false,
   "workbench.editor.revealIfOpen": true,
   "workbench.editor.scrollToSwitchFiles": true,
-
   // Enable horizontal scrolling in explorer when needed
   "workbench.tree.enableStickyScroll": true,
   "explorer.incrementalNaming": "smart",
