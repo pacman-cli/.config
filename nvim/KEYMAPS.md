@@ -432,8 +432,6 @@ From `lazyvim/config/keymaps.lua`:
 | `n` | `<leader>do` | `step over` | Step over |
 | `n` | `<leader>dO` | `step over` | Step over (alt) |
 | `n` | `<leader>di` | `step into` | Step into |
-| `n` | `<leader>dO` | `step over` | -- |
-| `n` | `<leader>do` | `step out` | Step out |
 | `n` | `<leader>dg` | `go to line` | Go to line (no exec) |
 | `n` | `<leader>dC` | `run to cursor` | Run to cursor |
 | `n` | `<leader>da` | `run with args` | Run with args |

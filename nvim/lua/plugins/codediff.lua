@@ -41,6 +41,12 @@ local function diff_clipboard()
   end
 
   vim.cmd(string.format("CodeDiff file %s %s", vim.fn.fnameescape(temp_path), vim.fn.fnameescape(current_file)))
+  vim.defer_fn(function()
+    pcall(vim.fn.delete, temp_path)
+    if current_file ~= vim.fn.expand('%:p') then
+      pcall(vim.fn.delete, current_file)
+    end
+  end, 1000)
   vim.notify("Diffing against Clipboard", vim.log.levels.INFO, { title = "CodeDiff" })
 end
 
@@ -80,6 +86,10 @@ local function diff_with_stored()
   end
 
   vim.cmd(string.format("CodeDiff file %s %s", vim.fn.fnameescape(t1), vim.fn.fnameescape(t2)))
+  vim.defer_fn(function()
+    pcall(vim.fn.delete, t1)
+    pcall(vim.fn.delete, t2)
+  end, 1000)
 end
 
 -- Plugin Spec

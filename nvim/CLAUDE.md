@@ -13,7 +13,7 @@ init.lua → require("config.lazy")  → bootstraps lazy.nvim
                                     → imports LazyVim defaults (lazyvim.plugins)
                                     → imports lua/plugins/*.lua (custom specs)
 
-lua/config/       LazyVim standard config modules (options, keymaps, autocmds, lazy bootstrap)
+lua/config/       LazyVim standard config modules (options, keymaps, lazy bootstrap)
 lua/plugins/      Plugin specs — each file returns lazy.nvim spec table(s)
 lua/jira-config.lua  Jira credentials/URLs (reads JIRA_API_TOKEN env var)
 lazyvim.json      LazyVim extras selection (46 enabled)

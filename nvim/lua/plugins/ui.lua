@@ -94,13 +94,7 @@ return {
         event = "file_opened",
         handler = function()
           vim.defer_fn(function()
-            local ok, manager = pcall(require, "neo-tree.sources.manager")
-            if not ok then return end
-            local state = manager.get_state("filesystem")
-            if state and state.winid and vim.api.nvim_win_is_valid(state.winid) then
-              local wins = vim.api.nvim_list_wins()
-              if #wins > 1 then pcall(vim.cmd, "Neotree close filesystem") end
-            end
+            pcall(vim.cmd, "Neotree close")
           end, 100)
         end,
       })
